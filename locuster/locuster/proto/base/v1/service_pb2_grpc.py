@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from base.v1 import service_pb2 as base_dot_v1_dot_service__pb2
+from locuster.proto.base.v1 import service_pb2 as base_dot_v1_dot_service__pb2
 
 
 class PermissionStub(object):

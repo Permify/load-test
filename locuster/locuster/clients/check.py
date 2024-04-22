@@ -3,50 +3,23 @@ import grpc
 import inspect
 import time
 import gevent
+import random
+
+import locuster.proto.base.v1.service_pb2 as pb
 
 from locust import task, events, constant
 from locust.contrib.fasthttp import FastHttpUser
 from locust.runners import STATE_STOPPING, STATE_STOPPED, STATE_CLEANUP, WorkerRunner
 
+from locuster.lib import GrpcUser
 from locuster.config import ENDPOINT
+from locuster.proto.base.v1.service_pb2_grpc import PermissionStub, TenancyStub
 
 
-def stopwatch(func):
-    """To be updated"""
-
-    def wrapper(*args, **kwargs):
-        """To be updated"""
-        # get task's function name
-        previous_frame = inspect.currentframe().f_back
-        _, _, task_name, _, _ = inspect.getframeinfo(previous_frame)
-
-        start = time.time()
-        result = None
-        try:
-            result = func(*args, **kwargs
-        except Exception as e:
-            total = int((time.time() - start) * 1000)
-            events.request_failure.fire(
-                request_type="TYPE",
-                name=task_name,
-                response_time=total,
-                response_length=0,
-                exception=e
-            )
-        else:
-            total = int((time.time() - start) * 1000)
-            events.request_success.fire(
-                request_type="TYPE",
-                name=task_name,
-                response_time=total,
-                response_length=0
-            )
-        return result
-    return wrapper
-
-
-class GRPCMyLocust(FastHttpUser):
+class GRPCPermifyCheck(GrpcUser):
+    host = ENDPOINT
     wait_time = constant(0)
+    stub_class = PermissionStub
 
     def on_start(self):
         """ on_start is called when a Locust start before any task is scheduled """
@@ -57,29 +30,43 @@ class GRPCMyLocust(FastHttpUser):
         pass
 
     @task
-    @stopwatch
-    def grpc_client_task(self):
-        """To be updated"""
-        try:
-            with grpc.insecure_channel(ENDPOINT) as channel:
-                stub = None # todo
-                response = None # todo
-                print(response)
-        except (KeyboardInterrupt, SystemExit):
-            sys.exit(0)
+    # @stopwatch
+    def check_request(self):
+        request_type = random.choice([1, 2, 3])
+
+        if request_type == 1:
+            entity = {
+                "type": "content",
+                "id": str(random.randint(1, 364583))
+            }
+        elif request_type == 2:
+            entity = {
+                "type": "user",
+                "id": str(random.randint(1, 52083))
+            }
+        else:
+            entity = {
+                "type": "interaction",
+                "id": str(random.randint(1, 104167))
+            }
+        
+        subject = {
+            "type": "user",
+            "id": str(random.randint(1, 52083))
+        }
 
 
-# Stopping the locust if a threshold (in this case the fail ratio) is exceeded
-def checker(environment):
-    while not environment.runner.state in [STATE_STOPPING, STATE_STOPPED, STATE_CLEANUP]:
-        time.sleep(1)
-        if environment.runner.stats.total.fail_ratio > 0.2:
-            print(f"fail ratio was {environment.runner.stats.total.fail_ratio}, quitting")
-            environment.runner.quit()
-            return
-
-
-@events.init.add_listener
-def on_locust_init(environment, **_kwargs):
-    if not isinstance(environment.runner, WorkerRunner):
-        gevent.spawn(checker, environment)
+        response = self.stub.Check(
+                    pb.PermissionCheckRequest(
+                        tenant_id='t1',
+                        metadata=pb.PermissionCheckRequestMetadata(
+                            snap_token='7XMAAAAAAAA=',
+                            depth=100,
+                            schema_version="coj7t38si3b1ki8vttv0"
+                        ),
+                        entity=entity,
+                        permission="view",
+                        subject=subject
+                    )
+                )
+        print(response)
