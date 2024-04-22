@@ -9,7 +9,6 @@ from locust.contrib.fasthttp import FastHttpUser
 from locust.runners import STATE_STOPPING, STATE_STOPPED, STATE_CLEANUP, WorkerRunner
 
 from locuster.config import ENDPOINT
-from locuster.proto.service_pb2_grpc import Permission, PermissionStub
 
 
 def stopwatch(func):
@@ -24,7 +23,7 @@ def stopwatch(func):
         start = time.time()
         result = None
         try:
-            result = func(*args, **kwargs)
+            result = func(*args, **kwargs
         except Exception as e:
             total = int((time.time() - start) * 1000)
             events.request_failure.fire(
