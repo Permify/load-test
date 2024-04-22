@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "locuster"
+version = "0.1.0"
+description = ""
+authors = ["thegeekywanderer <karansingh8777@gmail.com>"]
+repository = "https://github.com/Permify/load-test"
+readme = "README.md"
+
+[tool.black]
+line-length = 120
+
+[tool.poetry.dependencies]
+python = "^3.10"
+locust = "^2.26.0"
+gevent = "^24.2.1"
+
+[tool.poetry.group.dev.dependencies]
+bandit = "*"
+black = "*"
+flake8 = "*"
+flower = "*"
+pylint = "*"
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
