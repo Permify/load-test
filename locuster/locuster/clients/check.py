@@ -73,7 +73,7 @@ from locuster.proto.base.v1.service_pb2_grpc import PermissionStub, TenancyStub
 #         print(response)
 
 class HTTPPermifyCheck(FastHttpUser):
-    host = f'http://{ENDPOINT}:3476/v1/tenants/t1/permissions/check'
+    host = f'http://{ENDPOINT}/v1/tenants/t1/permissions/check'
 
     @task
     def check_request(self):
