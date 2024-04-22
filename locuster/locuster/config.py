@@ -1,1 +1,1 @@
-ENDPOINT = 'a2a283c9375b74a7d84f7b0cf87b474e-755733198.us-east-1.elb.amazonaws.com:3478'
+ENDPOINT = 'add397f39ccae4934971797cee4a9c6a-665833280.us-east-1.elb.amazonaws.com'
