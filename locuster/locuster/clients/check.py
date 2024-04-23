@@ -110,7 +110,7 @@ class HTTPPermifyCheck(FastHttpUser):
                 "entity": entity,
                 "permission": "view",
                 "subject": subject,
-        #     }
+            }
         # request = {
         #         "tenant_id": "t1",
         #         "metadata": {
