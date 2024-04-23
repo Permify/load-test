@@ -77,29 +77,40 @@ class HTTPPermifyCheck(FastHttpUser):
 
     @task
     def check_request(self):
-        request_type = random.choice([1, 2, 3])
+        # request_type = random.choice([1, 2, 3])
 
-        if request_type == 1:
-            entity = {
-                "type": "content",
-                "id": str(random.randint(1, 364583))
-            }
-        elif request_type == 2:
-            entity = {
-                "type": "user",
-                "id": str(random.randint(1, 52083))
-            }
-        else:
-            entity = {
-                "type": "interaction",
-                "id": str(random.randint(1, 104167))
-            }
+        # if request_type == 1:
+        #     entity = {
+        #         "type": "content",
+        #         "id": str(random.randint(1, 364583))
+        #     }
+        # elif request_type == 2:
+        #     entity = {
+        #         "type": "user",
+        #         "id": str(random.randint(1, 52083))
+        #     }
+        # else:
+        #     entity = {
+        #         "type": "interaction",
+        #         "id": str(random.randint(1, 104167))
+        #     }
         
-        subject = {
-            "type": "user",
-            "id": str(random.randint(1, 52083))
-        }
+        # subject = {
+        #     "type": "user",
+        #     "id": str(random.randint(1, 52083))
+        # }
 
+        # request = {
+        #         "tenant_id": "t1",
+        #         "metadata": {
+        #             "snap_token": "7XMAAAAAAAA=",
+        #             "schema_version": "coj7t38si3b1ki8vttv0",
+        #             "depth": 100
+        #         },
+        #         "entity": entity,
+        #         "permission": "view",
+        #         "subject": subject,
+        #     }
         request = {
                 "tenant_id": "t1",
                 "metadata": {
@@ -107,9 +118,15 @@ class HTTPPermifyCheck(FastHttpUser):
                     "schema_version": "coj7t38si3b1ki8vttv0",
                     "depth": 100
                 },
-                "entity": entity,
+                "entity": {
+                    "type": "user",
+                    "id": "10"
+                },
                 "permission": "view",
-                "subject": subject,
+                "subject": {
+                    "type": "user",
+                    "id": "100"
+                },
             }
         print(request)
         response = self.client.post(
