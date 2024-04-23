@@ -103,8 +103,8 @@ class HTTPPermifyCheck(FastHttpUser):
         request = {
                 "tenant_id": "t1",
                 "metadata": {
-                    "snap_token": "7XMAAAAAAAA=",
-                    "schema_version": "coj7t38si3b1ki8vttv0",
+                    "snap_token": "n4QAAAAAAAA=",
+                    "schema_version": "cojo0rv08b6g1j6m49q0",
                     "depth": 100
                 },
                 "entity": entity,
