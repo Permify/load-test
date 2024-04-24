@@ -72,65 +72,74 @@ from locuster.proto.base.v1.service_pb2_grpc import PermissionStub, TenancyStub
 #                 )
 #         print(response)
 
-class HTTPPermifyCheck(FastHttpUser):
-    host = f'http://{ENDPOINT}:3476/v1/tenants/t1/permissions/check'
+# class HTTPPermifyCheck(FastHttpUser):
+#     host = f'http://{ENDPOINT}:3476/v1/tenants/t1/permissions/check'
+
+#     @task
+#     def check_request(self):
+#         request_type = random.choice([1, 2, 3])
+
+#         if request_type == 1:
+#             entity = {
+#                 "type": "content",
+#                 "id": str(random.randint(1, 364583))
+#             }
+#         elif request_type == 2:
+#             entity = {
+#                 "type": "user",
+#                 "id": str(random.randint(1, 52083))
+#             }
+#         else:
+#             entity = {
+#                 "type": "interaction",
+#                 "id": str(random.randint(1, 104167))
+#             }
+        
+#         subject = {
+#             "type": "user",
+#             "id": str(random.randint(1, 52083))
+#         }
+
+#         request = {
+#                 "tenant_id": "t1",
+#                 "metadata": {
+#                     "snap_token": "7XMAAAAAAAA=",
+#                     "schema_version": "coj7t38si3b1ki8vttv0",
+#                     "depth": 100
+#                 },
+#                 "entity": entity,
+#                 "permission": "view",
+#                 "subject": subject,
+#             }
+#         # request = {
+#         #         "tenant_id": "t1",
+#         #         "metadata": {
+#         #             "snap_token": "n4QAAAAAAAA=",
+#         #             "schema_version": "cojo0rv08b6g1j6m49q0",
+#         #             "depth": 100
+#         #         },
+#         #         "entity": {
+#         #             "type": "user",
+#         #             "id": "10"
+#         #         },
+#         #         "permission": "view",
+#         #         "subject": {
+#         #             "type": "user",
+#         #             "id": "100"
+#         #         },
+#         #     }
+#         print(request)
+#         response = self.client.post(
+#             self.host, 
+#             json.dumps(request)
+#         ) 
+#         print(response.content)
+
+
+class HTTPPermifyHealth(FastHttpUser):
+    host = f'http://{ENDPOINT}:3476/healthz'
 
     @task
-    def check_request(self):
-        request_type = random.choice([1, 2, 3])
-
-        if request_type == 1:
-            entity = {
-                "type": "content",
-                "id": str(random.randint(1, 364583))
-            }
-        elif request_type == 2:
-            entity = {
-                "type": "user",
-                "id": str(random.randint(1, 52083))
-            }
-        else:
-            entity = {
-                "type": "interaction",
-                "id": str(random.randint(1, 104167))
-            }
-        
-        subject = {
-            "type": "user",
-            "id": str(random.randint(1, 52083))
-        }
-
-        request = {
-                "tenant_id": "t1",
-                "metadata": {
-                    "snap_token": "7XMAAAAAAAA=",
-                    "schema_version": "coj7t38si3b1ki8vttv0",
-                    "depth": 100
-                },
-                "entity": entity,
-                "permission": "view",
-                "subject": subject,
-            }
-        # request = {
-        #         "tenant_id": "t1",
-        #         "metadata": {
-        #             "snap_token": "n4QAAAAAAAA=",
-        #             "schema_version": "cojo0rv08b6g1j6m49q0",
-        #             "depth": 100
-        #         },
-        #         "entity": {
-        #             "type": "user",
-        #             "id": "10"
-        #         },
-        #         "permission": "view",
-        #         "subject": {
-        #             "type": "user",
-        #             "id": "100"
-        #         },
-        #     }
-        print(request)
-        response = self.client.post(
-            self.host, 
-            json.dumps(request)
-        ) 
+    def health_request(self):
+        response = self.client.get(self.host) 
         print(response.content)
